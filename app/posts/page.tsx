@@ -3,7 +3,16 @@ import prisma from "@/lib/db";
 import Link from "next/link";
 
 export default async function PostsPage() {
-  const posts = await prisma.post.findMany();
+  // const posts = await prisma.post.findMany();    All Posts
+
+  const user = await prisma.user.findUnique({
+    where: {
+      email: "john@doe.com",
+    },
+    include: {
+      posts: true,
+    },
+  });
 
   const postCount = await prisma.post.count();
 
@@ -11,7 +20,7 @@ export default async function PostsPage() {
     <main>
       <h1>All Posts ({postCount})</h1>
       <ul>
-        {posts.map((post) => (
+        {user?.posts.map((post) => (
           <li key={post.id}>
             <Link href={`/posts/${post.id}`}>{post.title}</Link>
           </li>

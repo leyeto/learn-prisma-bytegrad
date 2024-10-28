@@ -14,6 +14,9 @@ export async function createPost(formData: FormData) {
       title: title,
       slug: slug,
       content: content,
+      author: {
+        connect: { email: "john@doe.com" },
+      },
     },
   });
 

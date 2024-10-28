@@ -18,6 +18,15 @@ model Post {
   published Boolean  @default(false)
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now()) @map("created_at")
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
 
   @@index(slug)
+}
+
+model User {
+  id             String @id @default(cuid())
+  email          String @unique
+  hashedPassword String
+  posts          Post[]
 }
